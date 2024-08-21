@@ -33,4 +33,7 @@ npm run dev
 # Run tests
 npm run test
 ```
-
+## Próximas features possíveis
+- Aumentar cobertura de testes [Por falta de tempo não consegui deixar com a cobertura maior]
+- Alinhar com o designer mensagens de erro em cadastrados de veíuculos já feitos, assim como telas de erro de excessão e implementar no front
+- Alinhar com back-end tradução das mensagens de erro em casos de bordas como cadastros já realizados para apresentar no front-end
