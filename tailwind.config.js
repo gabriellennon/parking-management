@@ -20,7 +20,8 @@ export default {
           350: '#FFFBE6',
         },
         green: {
-          550: '#28DD91'
+          550: '#28DD91',
+          950: '#0A261D'
         },
         purple: {
           550: '#A769B2'

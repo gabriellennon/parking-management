@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import ParkingLogo from '../../assets/icons/logo_parking.svg';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -15,11 +16,11 @@ export const Header = () => {
             "bg-blue-550 text-white p-5 flex flex-col md:flex-row gap-5", {
             'h-screen': mobileMenuOpen,
         })}>
-            <a className="text-4xl md:text-lg">
+            <Link to="/" className="text-4xl md:text-lg">
                 <img src={ParkingLogo} alt="Logo do managment parking, simbolizada por um círculo branco com um P dentro dele" />
-            </a>
-            <a className={menuItemClassName}>Entrada</a>
-            <a className={menuItemClassName}>Saída</a>
+            </Link>
+            <Link to="/entrance" className={menuItemClassName}>Entrada</Link>
+            <Link to="/exit" className={menuItemClassName}>Saída</Link>
 
             <button 
                 className="md:hidden absolute right-4 top-6"

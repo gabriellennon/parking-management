@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from 'clsx';
 import { servicesType } from "../utils/types";
 import { Header } from "./components/Header";
 import { EntranceForm } from "./components/EntranceForm";
 import { ExitForm } from "./components/ExitForm";
+import { useLocation } from "react-router-dom";
 
 export const Home = () => {
     const [activeService, setActiveService] = useState<servicesType>('entrance');
+    const location = useLocation();
+
+    useEffect(() => {
+      const actualService = location.pathname.split('/')[1];
+      if(actualService.length){
+        setActiveService(activeService);
+      }
+    },[activeService, location]);
   
     return (
       <main className="bg-gray-95 min-h-screen">

@@ -3,24 +3,18 @@ import InputMask from 'react-input-mask';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { exitParkingSchema } from "../../utils/schema";
+import { Link } from 'react-router-dom';
 
 type ExitParkingFormData = z.infer<typeof exitParkingSchema>;
 
 export const ExitForm = () => {
-    const { register, handleSubmit, formState: { errors, isValid }, setValue } = useForm<ExitParkingFormData>({
+    const { register, handleSubmit, formState: { errors, isValid }, getValues } = useForm<ExitParkingFormData>({
         resolver: zodResolver(exitParkingSchema)
-      });
-    
-      const handlePlateChange = (value: string) => {
-        const rawValue = value.replace("-", "");
-        if(rawValue.length == 7) {
-          setValue("plateLicenseNumber", rawValue);
-        }
-      };
-    
-      const onSubmit: SubmitHandler<ExitParkingFormData> = (data) => {
+    });
+
+    const onSubmit: SubmitHandler<ExitParkingFormData> = (data) => {
         console.log(data);
-      };
+    };
       
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
@@ -35,7 +29,6 @@ export const ExitForm = () => {
                     placeholder="AAA-9999"
                     mask="aaa-9999"
                     maskChar=""
-                    onChange={(e) => handlePlateChange(e.target.value)} 
                 />
                 {errors.plateLicenseNumber?.message && (
                     <p className="text-red-500 text-sm mt-1">
@@ -59,11 +52,14 @@ export const ExitForm = () => {
                 >
                     saída
                 </button>
-                <button
-                    className="text-blue-650 uppercase bg-transparent text-center mt-3 w-full font-medium"
-                >
-                    Ver Histórico
-                </button>
+                {isValid && getValues().plateLicenseNumber && (
+                    <Link
+                        to={`/history/${getValues().plateLicenseNumber}`}
+                        className="text-blue-650 uppercase bg-transparent text-center mt-3 w-full font-medium"
+                    >
+                        Ver Histórico
+                    </Link>
+                )}
             </div>
         </form>
     )

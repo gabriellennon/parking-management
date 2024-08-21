@@ -1,41 +1,43 @@
 import * as z from 'zod';
 import InputMask from 'react-input-mask';
+import toast, { Toaster } from 'react-hot-toast';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { entranceParkingSchema } from "../../utils/schema";
-import { useState } from 'react';
 import { Loading } from './Loading';
 import { ResultProccess } from './ResultProccess';
+import { useRegisterParking } from '../../hooks/useParking';
+import { useEffect } from 'react';
 
 type EntranceParkingFormData = z.infer<typeof entranceParkingSchema>;
 
 export const EntranceForm = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    // Subtituir pelo success que virá da API
-    const [isSuccessRegister, setIsSuccessRegister] = useState(false);
-    const { register, handleSubmit, formState: { errors, isValid }, setValue } = useForm<EntranceParkingFormData>({
+    const { submitPlate, loading, error, success } = useRegisterParking();
+
+    const { register, handleSubmit, formState: { errors, isValid } } = useForm<EntranceParkingFormData>({
         resolver: zodResolver(entranceParkingSchema)
     });
     
-    const handlePlateChange = (value: string) => {
-        const rawValue = value.replace("-", "");
-        if(rawValue.length == 7) {
-            setValue("plateLicenseNumber", rawValue);
-        }
-    };
+    // const handlePlateChange = (value: string) => {
+    //     const rawValue = value.replace("-", "");
+    //     if(rawValue.length == 7) {
+    //         setValue("plateLicenseNumber", rawValue);
+    //     }
+    // };
     
-    const onSubmit: SubmitHandler<EntranceParkingFormData> = (data) => {
-        setIsLoading(true);
-        console.log(data);
-        setTimeout(() => {
-            setIsLoading(false);
-            setIsSuccessRegister(true);
-        }, 2000);
+    const onSubmit: SubmitHandler<EntranceParkingFormData> = async (data) => {
+        await submitPlate(data.plateLicenseNumber);
     };
 
-    if(isLoading) return <Loading />
+    useEffect(() => {
+        if(error) {
+            toast.error(error);
+        }
+    },[error])
 
-    if(!isLoading && isSuccessRegister) return <ResultProccess title='Registrado!' />
+    if(loading) return <Loading />
+
+    if(!loading && success) return <ResultProccess title='Registrado!' />
       
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
@@ -50,7 +52,7 @@ export const EntranceForm = () => {
                     placeholder="AAA-9999"
                     mask="aaa-9999"
                     maskChar=""
-                    onChange={(e) => handlePlateChange(e.target.value)} 
+                    // onChange={(e) => handlePlateChange(e.target.value)} 
                 />
                 {errors.plateLicenseNumber?.message && (
                     <p className="text-red-500 text-sm mt-1">
@@ -65,6 +67,10 @@ export const EntranceForm = () => {
             >
                 confirmar entrada
             </button>
+            <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
         </form>
     )
 }
