@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getHistoryParkingService, registerParkingService } from '../services/parkingService';
+import { getHistoryParkingService, registerExitParkingService, registerParkingService, registerPaymentParkingService } from '../services/parkingService';
 import { vehicleData } from '../utils/types';
 
 export const useRegisterParking = () => {
@@ -25,6 +25,56 @@ export const useRegisterParking = () => {
   };
 
   return { submitPlate, loading, error, success };
+};
+
+export const useRegisterPaymentParking = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+
+  const handlePay = async (plate: string) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const data = await registerPaymentParkingService(plate);
+      setSuccess(true);
+      return data;
+    } catch (err) {
+        console.error(err)
+        setError('Ocorreu um erro ao processar o pagamento.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { handlePay, loading, error, success };
+};
+
+export const useRegisterExitParking = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+
+  const handleRegisterExit = async (plate: string) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const data = await registerExitParkingService(plate);
+      setSuccess(true);
+      return data;
+    } catch (err) {
+        console.error(err)
+        setError('Ocorreu um erro ao processar a saída.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { handleRegisterExit, loading, error, success };
 };
 
 export const useGetHistoryParking = () => {

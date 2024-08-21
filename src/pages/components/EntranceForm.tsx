@@ -4,7 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { entranceParkingSchema } from "../../utils/schema";
-import { Loading } from './Loading';
+import { Loading } from '../../components/Loading';
 import { ResultProccess } from './ResultProccess';
 import { useRegisterParking } from '../../hooks/useParking';
 import { useEffect } from 'react';
@@ -18,13 +18,6 @@ export const EntranceForm = () => {
         resolver: zodResolver(entranceParkingSchema)
     });
     
-    // const handlePlateChange = (value: string) => {
-    //     const rawValue = value.replace("-", "");
-    //     if(rawValue.length == 7) {
-    //         setValue("plateLicenseNumber", rawValue);
-    //     }
-    // };
-    
     const onSubmit: SubmitHandler<EntranceParkingFormData> = async (data) => {
         await submitPlate(data.plateLicenseNumber);
     };
@@ -35,7 +28,7 @@ export const EntranceForm = () => {
         }
     },[error])
 
-    if(loading) return <Loading />
+    if(loading) return <Loading title='Registrando' />
 
     if(!loading && success) return <ResultProccess title='Registrado!' />
       

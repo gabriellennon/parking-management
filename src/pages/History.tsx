@@ -6,7 +6,7 @@ import ArrowLeft from '../assets/icons/arrow_left.svg';
 import { Card } from "@radix-ui/themes";
 import { vehicleData } from "../utils/types";
 import { useGetHistoryParking } from "../hooks/useParking";
-import { Loading } from "./components/Loading";
+import { Loading } from "../components/Loading";
 
 export const History = () => {
     const location = useLocation();
@@ -38,7 +38,7 @@ export const History = () => {
         }
     },[error])
 
-    if(loading) return <Loading />
+    if(loading) return <Loading title="Buscando..." />
 
     return (
         <div className="bg-gray-95 min-h-screen">
