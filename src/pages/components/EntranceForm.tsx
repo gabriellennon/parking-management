@@ -45,7 +45,6 @@ export const EntranceForm = () => {
                     placeholder="AAA-9999"
                     mask="aaa-9999"
                     maskChar=""
-                    // onChange={(e) => handlePlateChange(e.target.value)} 
                 />
                 {errors.plateLicenseNumber?.message && (
                     <p className="text-red-500 text-sm mt-1">

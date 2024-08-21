@@ -19,7 +19,7 @@ export const DialogParking = ({ plate, title, titleButtonSubmit, handleSubmit, i
         if (isSuccess) {
             const timer = setTimeout(() => {
                 window.location.reload();
-            }, 2000);
+            }, 1000);
 
             return () => clearTimeout(timer);
         }
